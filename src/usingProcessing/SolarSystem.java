@@ -1,7 +1,6 @@
 package usingProcessing;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import peasy.PeasyCam;
@@ -18,36 +17,46 @@ public class SolarSystem extends PApplet {
 	Planet sun;
 	Planet[] planets;
 	int number;
-	final PVector FORCE = new PVector(1,0,1);
+	final PVector v2 = new PVector(1, 0, 1); //公転時に軌道をx-z平面に近づけるためのベクトル
+
 	public void settings() {
 		size(800, 600, P3D);
 	}
 
 	public void setup() {
-		cam = new PeasyCam(this, 200);
-		sun = new Planet(0, 80, 0);
-		number = 1;
-		planets = new Planet[number];
-		for (int i = 0; i < number; i++) {
-			float dis = random(50, 200);
-			float size = random(40, 70);
-			float vel = random(-6, 6);
-			planets[i] = new Planet(dis, size, vel);
-//			planets[i].generateSatellite((int) (random(1, 4)));
-		}
-		sun.satellites = Arrays.asList(planets);
-
+		cam = new PeasyCam(this, 100);
+		colorMode(HSB, 360, 100, 100);
+		sun = new Planet(0, 300, 0);
+		sun.generateSatellite(4, 1);
 	}
 
 	public void draw() {
 		background(0);
-		translate(width / 2, height / 2);
+		grid();
+
 		lights();
 		sun.show();
-		sun.move();
+	}
+
+	public void grid() {
+		int l = 1200;
+		stroke(0, 0, 100);
+		for (int x = -l; x < l; x += 50) {
+			line(x, 0, -l, x, 0, l);
+			line(x, -l, 0, x, l, 0);
+		}
+		for (int y = -l; y < l; y += 50) {
+			line(0, y, -l, 0, y, l);
+			line(-l, y, 0, l, y, 0);
+		}
+		for (int z = -l; z < l; z += 50) {
+			line(0, -l, z, 0, l, z);
+			line(-l, 0, z, l, 0, z);
+		}
 	}
 
 	class Planet {
+		int color;
 		float d, s, v, a;
 		PVector pos;
 		PVector vel;
@@ -57,18 +66,23 @@ public class SolarSystem extends PApplet {
 			d = distance;
 			s = size;
 			v = velocity;
-			vel = PVector.random3D();
-			vel.mult(d);
+
+			pos = PVector.random3D();
+			pos.mult(d);
 			a = 0;
-			pos = new PVector(d * cos(radians(a)), d * sin(radians(a)), d * cos(radians(a)));
 		}
 
 		public void show() {
 			pushMatrix();
-			rotate(a, pos.x,pos.y,pos.z);
-			translate(pos.x, pos.y, pos.z);
 
-			fill(255);
+			PVector r = pos.cross(v2);
+			rotate(a, r.x, r.y, r.z);
+
+			stroke(0, 0, 100);
+			line(0, 0, 0, pos.x, pos.y, pos.z);
+
+			translate(pos.x, pos.y, pos.z);
+			fill(color, 100, 100);
 			noStroke();
 			sphere(s);
 
@@ -81,18 +95,22 @@ public class SolarSystem extends PApplet {
 
 		public void move() {
 			a += v;
-			pos = vel.cross(FORCE);
-
-
 		}
 
-		public void generateSatellite(int i) {
+		public void generateSatellite(int i, int level) {
 			for (int k = 0; k < i; k++) {
-				float _d = d * 0.5f;
-				float _size = random(s * 0.4f, s * 0.6f);
-				float _v = v * random(1.0f, 1.3f);
+				float _size = s / (level * 2);
+				float _d = random(s + _size, (s + _size) * 2.5f);
+				float _v = random(-0.1f, 0.1f);
 				satellites.add(new Planet(_d, _size, _v));
+				int c = (int) map(_d, s + _size, (s + _size) * 2.5f, 0, 360);
+				satellites.get(k).color = c;
+				if (level < 2) {
+					int num = (int) random(0, 6);
+					satellites.get(k).generateSatellite(num, level + 1);
+				}
 			}
+
 		}
 	}
 }
