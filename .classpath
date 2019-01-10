@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="I:/processing-3.4/extarnal liblary/toxiclibs/library/toxiclibs.jar"/>
+	<classpathentry kind="lib" path="I:/processing-3.4/extarnal liblary/peasycam/library/peasy-math.jar"/>
+	<classpathentry kind="lib" path="I:/processing-3.4/extarnal liblary/peasycam/library/peasycam.jar"/>
+	<classpathentry kind="lib" path="I:/processing-3.4/core/library/core.jar"/>
+	<classpathentry kind="lib" path="I:/processing-3.4/core/library/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="I:/processing-3.4/core/library/gluegen-rt-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="I:/processing-3.4/core/library/jogl-all.jar"/>
+	<classpathentry kind="lib" path="I:/processing-3.4/core/library/jogl-all-natives-windows-amd64.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
