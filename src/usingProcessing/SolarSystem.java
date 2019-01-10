@@ -103,7 +103,7 @@ public class SolarSystem extends PApplet {
 				float _d = random(s + _size, (s + _size) * 2.5f);
 				float _v = random(-0.1f, 0.1f);
 				satellites.add(new Planet(_d, _size, _v));
-				int c = (int) map(_d, s + _size, (s + _size) * 2.5f, 0, 360);
+				int c = (int) map(_d, s + _size, (s + _size) * 2.5f, 0, 340);
 				satellites.get(k).color = c;
 				if (level < 2) {
 					int num = (int) random(0, 6);
